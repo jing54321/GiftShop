@@ -1,0 +1,22 @@
+{
+  "name": "giftshop",
+  "version": "1.0.0",
+  "description": "MERN gift shopping app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jing54321/GiftShop.git"
+  },
+  "author": "Kyungwon Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jing54321/GiftShop/issues"
+  },
+  "homepage": "https://github.com/jing54321/GiftShop#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

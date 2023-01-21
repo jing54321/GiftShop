@@ -25,7 +25,8 @@ const CartScreen = () => {
     }
     const calculateTotal = (items) => {
         const total = items.reduce((prev, item) => prev + item.qty*item.price,0);
-        return total.toFixed(2);
+        const dollarCanadaLocale = Intl.NumberFormat('en-US');
+        return dollarCanadaLocale.format(total);
     }
     
   return (

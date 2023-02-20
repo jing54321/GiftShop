@@ -34,7 +34,7 @@ const CartScreen = () => {
         <h2 className='mb-3'>Shopping Cart</h2>
            <Row>
                 <Col md={8}>
-                    {cartItems.length ===0 ? (<Message>Your cart is empty<Link to='/'>Go Back</Link></Message>):(
+                    {cartItems.length ===0 ? (<Message>Your cart is empty <Link to='/'><Button className="btn-bg-info border-0">Go Back</Button></Link></Message>):(
                         <ListGroup variant='flush'>
                             {cartItems.map(item => (
                                 <ListGroup.Item key={item.product}>

@@ -10,7 +10,9 @@ const CartScreen = () => {
     const qty = new URLSearchParams(window.location.search).get("qty");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
     const {cartItems} = useSelector(state => state.cart);
+    
     useEffect(()=>{
         if(id) {
            dispatch(addToCart(id,qty))
@@ -21,7 +23,7 @@ const CartScreen = () => {
         dispatch(removeFromCart(id));
     }
     const checkoutHandler = () => {
-        navigate('/login?redirect=shipping')
+        navigate('/login?redirect=/shipping');
     }
     const calculateTotal = (items) => {
         const total = items.reduce((prev, item) => prev + item.qty*item.price,0);

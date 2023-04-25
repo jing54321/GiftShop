@@ -12,7 +12,7 @@ const PlaceOrderScreen = () => {
     const cart = useSelector(state => state.cart);
     const {shippingAddress, paymentMethod, cartItems} = cart;
     //calculate prices
-    const dollarCanadaLocale = Intl.NumberFormat('en-US');
+    const dollarCanadaLocale = Intl.NumberFormat('en-CA');
     const addDecimals = (num) => { return (Math.round(num*100)/100).toFixed(2)}
     cart.itemsPrice = addDecimals(cartItems.reduce((prev,item) => prev+=item.price*item.qty,0));
     cart.shippingPrice = addDecimals(cart.itemsPrice > 100? 0 : 15);
@@ -24,7 +24,7 @@ const PlaceOrderScreen = () => {
     
     useEffect(() => {
         if(success) {
-            navigate(`/order/${order._id}`)
+            navigate(`/orders/${order._id}`)
         }
     },[navigate,success,order])
     const placeOrderHandler = () => {
@@ -84,7 +84,6 @@ const PlaceOrderScreen = () => {
                          </ListGroup.Item>)}    
                         </ListGroup>  
                     )}
-                    
                 </ListGroup.Item>
             </ListGroup>
         </Col>

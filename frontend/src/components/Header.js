@@ -3,6 +3,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../actions/userAction';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -10,8 +11,16 @@ const Header = () => {
   const userDetails = useSelector(state => state.userDetails);
   const {user} = userDetails;
   const {userInfo} = userLogin;
+  const navigate = useNavigate();
+  const location = useLocation();
   const logoutHandler = () => {
-      dispatch(logout());
+      if(location.pathname.includes('admin')) {
+        dispatch(logout());
+        navigate('/login')
+      } else {
+        dispatch(logout());
+      }
+      
   }
   return (
     <header>
@@ -26,18 +35,36 @@ const Header = () => {
               <LinkContainer to='/cart'>
                 <Nav.Link><i className="fa-solid fa-cart-shopping"></i> Cart</Nav.Link>
               </LinkContainer>
-              {user.name? (
+              {(user.name && user._id === userInfo._id && !userInfo.isAdmin)? (
               <NavDropdown title={user.name} id='username'>
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>Profile</NavDropdown.Item>
                 </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+              </NavDropdown>) : (user.name && user.isAdmin)? (
+              <NavDropdown title={user.name} id='username'>
+                <LinkContainer to='/profile'>
+                  <NavDropdown.Item>Profile</NavDropdown.Item>
+                </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>User List</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to='/admin/products'>
+                  <NavDropdown.Item>Products</NavDropdown.Item>
+                </LinkContainer>
               </NavDropdown>) : (userInfo? 
               (<NavDropdown title={userInfo.name} id='username'>
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>Profile</NavDropdown.Item>
                 </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                  {userInfo.isAdmin && (<LinkContainer to='/admin/userlist'>
+                  <NavDropdown.Item>User List</NavDropdown.Item>
+                </LinkContainer>)}
+                  {userInfo.isAdmin && (<LinkContainer to='/admin/products'>
+                  <NavDropdown.Item>Products</NavDropdown.Item>
+                </LinkContainer>)}
               </NavDropdown>) : (<LinkContainer to='/login'>
                 <Nav.Link><i className="fa-solid fa-user"></i> Sign In</Nav.Link>
               </LinkContainer>))

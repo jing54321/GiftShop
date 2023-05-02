@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../actions/cartAction';
+import Meta from '../components/Meta';
 
 
 const PaymentScreen = () => {
@@ -20,6 +21,8 @@ const PaymentScreen = () => {
     navigate('/placeorder');
   }
   return (
+    <>
+    <Meta title='Payment'/>
     <FormContainer>
     <CheckoutSteps step1 step2 step3/>
     <h2 className='text-center mb-3'>Payment Method</h2>
@@ -40,6 +43,7 @@ const PaymentScreen = () => {
         </div>
     </Form>
     </FormContainer>
+    </>
   )
 }
 

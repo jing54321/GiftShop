@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Button, Row, Col, ListGroup, Image, Card} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
 
@@ -41,6 +42,7 @@ const PlaceOrderScreen = () => {
     
   return (
     <>
+      <Meta title='Place Order'/>
       <CheckoutSteps step1 step2 step3 step4/>
       <Row>
         <Col md={8}>

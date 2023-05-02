@@ -4,6 +4,7 @@ import {Form, Button, Row, Col, Table} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Meta from '../components/Meta';
 import {getUserDetails, updateUserProfile} from '../actions/userAction';
 import {getMyOrders} from '../actions/orderActions';
 import {USER_UPDATE_PROFILE_RESET} from '../constants/userConstants';
@@ -57,9 +58,13 @@ const ProfileScreen = () => {
             }, 2000);
             
             }
+
+
         }
       
     return (
+    <>
+    <Meta title={name+'\'s profile'}/>
     <Row>
         <Col md={4}>
             <h2 className='text-center mb-3'>User Profile</h2>
@@ -159,6 +164,8 @@ const ProfileScreen = () => {
             )}
         </Col>
     </Row>
+    </>
+    
    
         
   )

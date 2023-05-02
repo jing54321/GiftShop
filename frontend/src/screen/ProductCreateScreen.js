@@ -1,18 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {useParams, Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {Form, Button} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import Meta from '../components/Meta';
-import {getProduct, updateProduct} from '../actions/productActions';
-import { PRODUCT_UPDATE_RESET } from '../constants/productsConstants';
+import {createProduct} from '../actions/productActions';
 import axios from 'axios';
 
 
-const ProductEditScreen = () => {
-    const {productId} = useParams();
+const ProductCreateScreen = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('');
@@ -25,33 +22,16 @@ const ProductEditScreen = () => {
     const dispatch = useDispatch();
     const userLogin = useSelector(state => state.userLogin);
     const {userInfo} = userLogin;
-    const productDetails = useSelector(state => state.productDetails);
-    const {loading, error, product} = productDetails;
-
-    const productUpdate = useSelector(state => state.productUpdate);
-    const {loading:loadingUpdate, error:errorUpdate, success:successUpdate} = productUpdate;
+    const productCreate = useSelector(state => state.productCreate);
+    const {error,loading,success} = productCreate;
     
     
     useEffect(() => {
-        if(successUpdate) {
-            dispatch({type:PRODUCT_UPDATE_RESET})
-            navigate('/admin/products')
-        } else {
-            if(!product.name || product._id !== productId) {
-                dispatch(getProduct(productId));
-           } else {
-            setName(product.name);
-            setPrice(product.price);
-            setImage(product.image);
-            setBrand(product.brand);
-            setCategory(product.category);
-            setCountInStock(product.countInStock);
-            setDescription(product.description);
-           }
-
-        }
+      if(success) {
+        navigate('/admin/products')
+      }
        
-    },[dispatch,productId,product,successUpdate,navigate]);
+    },[dispatch,success,navigate]);
 
     const uploadFileHandler = async (e) => {
 
@@ -74,7 +54,7 @@ const ProductEditScreen = () => {
             setUploading(false)
 
         } catch (err) {
-            console.error(error)
+            console.error(err)
             setUploading(false)
 
         }
@@ -82,8 +62,11 @@ const ProductEditScreen = () => {
 
     const submitHandler = (e) => {
        e.preventDefault();
-       dispatch(updateProduct({
-        _id: productId,
+       if(name === ''|| price === '' || image === '' || brand === '' || description === '' || countInStock === '' || category === '') {
+            alert('Please fill the all fields!');
+            return;
+       }
+       dispatch(createProduct({
         name,
         price,
         image,
@@ -95,15 +78,13 @@ const ProductEditScreen = () => {
       }
       
     
-
     return (
     <>
-    <Meta title='Edit'/>
     <FormContainer>
     <Link to='/admin/products' className='btn btn-light my-3'>Go Back</Link>
-      <h1 className='text-center mb-3'>Edit Product</h1>
-      {(error || errorUpdate ) && <Message variant='danger'>{(error || errorUpdate)}</Message>}
-      {(loading || loadingUpdate) && <Loader/>}
+      <h1 className='text-center mb-3'>Create Product</h1>
+      {(error ) && <Message variant='danger'>{(error)}</Message>}
+      {(loading) && <Loader/>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
             <Form.Label className=''>Product Name</Form.Label>
@@ -168,7 +149,8 @@ const ProductEditScreen = () => {
             <Form.Group controlId='description' className='mt-3'>
             <Form.Label className='mt-3'>Description</Form.Label>
                 <Form.Control 
-                    type='text' 
+                    as='textarea' 
+                    row='2'
                     placeholder='Enter description'
                     value={description} 
                     onChange={(e) => setDescription(e.target.value)}>
@@ -176,7 +158,7 @@ const ProductEditScreen = () => {
             </Form.Group>
         <div className="d-grid mt-3">
             <Button  type='submit' variant='primary'>
-                Update
+                Create
             </Button>
         </div>
       </Form>
@@ -186,6 +168,7 @@ const ProductEditScreen = () => {
   )
 }
 
-export default ProductEditScreen;
+export default ProductCreateScreen;
+
 
 

@@ -4,7 +4,7 @@ import {Table, Button, Modal} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-
+import Meta from '../components/Meta';
 import {getUserList, deleteUser} from '../actions/userAction';
 import {useNavigate} from 'react-router-dom';
 
@@ -36,6 +36,7 @@ const UserListScreen = () => {
     }
   return (
     <>
+      <Meta title='User List'/>
       <h2>Users</h2>
       {loading? <Loader/> : error? <Message variant='danger'>{error}</Message> : (
         <Table striped bordered hover responsive className='table-sm'>

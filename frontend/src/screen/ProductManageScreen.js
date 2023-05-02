@@ -4,8 +4,10 @@ import {Table, Button, Modal, Row, Col} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import {getProductsList, createProduct} from '../actions/productActions';
-import {useNavigate} from 'react-router-dom';
+import Paginate from '../components/Paginate';
+import Meta from '../components/Meta';
+import {getProductsList} from '../actions/productActions';
+import {useNavigate, useParams} from 'react-router-dom';
 import { deleteProduct } from '../actions/productActions';
 import { PRODUCT_CREATE_RESET,PRODUCT_DELETE_RESET } from '../constants/productsConstants';
 
@@ -18,14 +20,13 @@ const ProductManageScreen = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {pageNumber} = useParams() || 1 ;
     const productList = useSelector(state => state.productList);
-    const {error, loading, products} = productList;
+    const {error, loading, products, pages, page} = productList;
     const userLogin = useSelector(state => state.userLogin);
     const {userInfo} = userLogin;
     const productDelete = useSelector(state => state.productDelete);
     const {error:errorDelete,loading:loadingDelete,success:successDelete} = productDelete;
-    const productCreate = useSelector(state => state.productCreate);
-    const {error:errorCreate,loading:loadingCreate,success:successCreate,product:createdProduct} = productCreate;
 
     useEffect(() => {
         
@@ -35,16 +36,14 @@ const ProductManageScreen = () => {
         if(!userInfo.isAdmin) {
             navigate('/login')
         } 
-        if(successCreate) {
-            navigate(`/admin/product/${createdProduct._id}/edit`)
-        } else {
-            dispatch(getProductsList());
-        }
+       
+        dispatch(getProductsList('', pageNumber));
         
-    },[dispatch, navigate, userInfo, successDelete,successCreate,createdProduct])
+        
+    },[dispatch, navigate, userInfo, successDelete,pageNumber])
     //Create product
     const createProductHandler = () => {
-        dispatch(createProduct())
+        navigate(`/admin/products/create`)
     }
     //Delete product 
     const deleteHandler = () => {
@@ -52,6 +51,7 @@ const ProductManageScreen = () => {
     }
   return (
     <>
+        <Meta title='Product List'/>
        <Row className="align-items-center ">
         <Col>
             <h2>Products</h2>
@@ -62,7 +62,8 @@ const ProductManageScreen = () => {
             </Button>
         </Col>
        </Row>
-      {(loading || loadingDelete || loadingCreate)? <Loader/> : (error || errorDelete || errorCreate)? <Message variant='danger'>{(error || errorDelete)}</Message> : (
+      {(loading || loadingDelete )? <Loader/> : (error || errorDelete )? <Message variant='danger'>{(error || errorDelete)}</Message> : (
+        <>
         <Table striped bordered hover responsive className='table-sm'>
             <thead>
                 <tr className='text-center'>
@@ -99,6 +100,8 @@ const ProductManageScreen = () => {
                 </tr>)}
             </tbody>
         </Table>
+        <Paginate total={pages} page={page}/>
+        </>
       )}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

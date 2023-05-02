@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect} from 'react';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Button, Form, Card} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,11 +33,21 @@ const CartScreen = () => {
     }
     
   return (
+    <>
+    <Meta title='Shopping Cart'/>
     <Fragment>
-        <h2 className='mb-3'>Shopping Cart</h2>
+        <Row>
+            <Col>
+                <h2>Shopping Cart</h2>
+            </Col>
+            <Col>
+                {cartItems.length !==0 && <Link to='/' className='btn btn-light'>Continue Shopping</Link>}
+            </Col>
+        </Row>
+        
            <Row>
                 <Col md={8}>
-                    {cartItems.length ===0 ? (<Message>Your cart is empty <Link to='/'><Button className="btn-bg-info border-0">Go Back</Button></Link></Message>):(
+                    {cartItems.length ===0 ? (<Message>Your cart is empty <Link to='/'><Button className="btn border-0">Go Back</Button></Link></Message>):(
                         <ListGroup variant='flush'>
                             {cartItems.map(item => (
                                 <ListGroup.Item key={item.product}>
@@ -89,6 +100,8 @@ const CartScreen = () => {
                 </Col>
            </Row>
     </Fragment>
+    </>
+    
   )
 }
 

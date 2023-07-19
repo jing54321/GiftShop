@@ -12,7 +12,7 @@ It was deployed by Render in conjunction with Github.
 
 ## Demo
 
-![bandicam_2023-07-18_20-12-37-985_AdobeExpress (1)](https://github.com/jing54321/GiftShop/assets/75094086/14c0387d-d32f-4078-95ca-2f4087ade44e)
+![ezgif com-video-to-gif](https://github.com/jing54321/GiftShop/assets/75094086/d37128de-1d42-4aa4-868e-28faf64eaa00)
 
 ## Used Libraries
 
